@@ -1,0 +1,57 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;600&display=swap');
+
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+#cblCarrera {
+    border-collapse: collapse;
+}
+
+    #cblCarrera td:nth-child(2n) {
+        padding-left: 5em;
+    }
+
+#SeleccionFecha {
+    display: flex;
+    width: 100%;
+}
+
+.tablaResultados th {
+    background: #004976;
+    color: white;
+    padding: 10px 25px 10px 5px;
+    text-transform: capitalize;
+    text-align: left;
+}
+
+
+.tablaResultados td {
+    padding: 15px 5px;
+}
+
+.tablaResultados tr, td {
+    border: 1px inset transparent;
+}
+
+.tablaResultados tr:not(:first-child) {
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.tablaResultados tr:not(:first-child):hover {
+    background: #d4d4d4;
+}
+
+#SeleccionCarreraCurso {
+    margin: 1.3em 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#OpcionesBusqueda {
+    max-height: 100px;
+    width: 150px;
+    font-weight: 600;
+}
+

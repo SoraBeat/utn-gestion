@@ -1,0 +1,168 @@
+-------CARGAR DE A UNO---------
+
+
+--FUNCTION POR FECHA
+
+	CREATE FUNCTION function_obteneralumnoscarrcursxfecha (mes integer, anio integer, idcarrcurso varchar(10))
+	RETURNS TABLE
+	(
+		CARRERA varchar(50), 
+		ALUMNOS bigint
+	)
+	language plpgsql
+	AS $$
+	BEGIN
+		RETURN QUERY 
+		select carrerascursos.cacu_descripcion, count(pagoalumnos.paal_idalucarrcurs) from carrerascursos
+		inner join carrerascursosalta
+		on carrerascursosalta.ccal_idcarrcurs = carrerascursos.cacu_idcarrcurs
+		inner join alumnoscarreracurso
+		on alumnoscarreracurso.alcc_idccalta = carrerascursosalta.ccal_idccalta
+		inner join pagoalumnos
+		on pagoalumnos.paal_idalucarrcurs = alumnoscarreracurso.alcc_idalucarrcurs
+		where carrerascursos.cacu_idcarrcurs = idcarrcurso and carrerascursosalta.CCAL_estado = 'EJECUCION'
+		and EXTRACT(MONTH FROM pagoalumnos.paal_fechadeb) = mes and EXTRACT(YEAR FROM pagoalumnos.paal_fechadeb) = anio
+		group by carrerascursos.cacu_descripcion;
+	END;$$
+	
+	
+-- FUNCTION POR AÑO
+	
+	CREATE FUNCTION function_obteneralumnoscarrcursxanio (anio integer, idcarrcurso varchar(10))
+	RETURNS TABLE
+	(
+		descripcion varchar(50), 
+		cont bigint
+	)
+	language plpgsql
+	AS $$
+	BEGIN
+		RETURN QUERY 
+		select carrerascursos.cacu_descripcion, count(pagoalumnos.paal_idalucarrcurs) from carrerascursos
+		inner join carrerascursosalta
+		on carrerascursosalta.ccal_idcarrcurs = carrerascursos.cacu_idcarrcurs
+		inner join alumnoscarreracurso
+		on alumnoscarreracurso.alcc_idccalta = carrerascursosalta.ccal_idccalta
+		inner join pagoalumnos
+		on pagoalumnos.paal_idalucarrcurs = alumnoscarreracurso.alcc_idalucarrcurs
+		where carrerascursos.cacu_idcarrcurs = idcarrcurso and carrerascursosalta.CCAL_estado = 'EJECUCION'
+		and EXTRACT(YEAR FROM pagoalumnos.paal_fechadeb) = anio
+		group by carrerascursos.cacu_descripcion;
+	END;$$
+	
+--CUOTAS POR ANIO
+	
+	CREATE FUNCTION function_obtenercuotascarrcursxanio(anio integer, idcarrcurso varchar(10))
+	RETURNS TABLE
+	(
+		Pago_Cuotas bigint, 
+		Impago_Cuotas bigint,
+		Parcial_Cuotas bigint
+	)
+	language plpgsql
+	AS $$
+	BEGIN
+		RETURN QUERY 
+		SELECT SUM(CASE WHEN paal_estado = 'PAGO' THEN 1 ELSE 0 END ) as "Pago_Cuotas" , 
+            SUM(CASE WHEN paal_estado = 'IMPAGO' THEN 1 ELSE 0 END) as "Impago_Cuotas", 
+            SUM(CASE WHEN paal_estado = 'PARCIAL' THEN 1 ELSE 0 END) as "Parcial_Cuotas"
+            FROM pagoalumnos AS pag 
+            INNER JOIN alumnoscarreracurso AS alcc 
+            ON pag.paal_idalucarrcurs = alcc.alcc_idalucarrcurs 
+            INNER JOIN carrerascursosalta as ccalta 
+            ON alcc.alcc_idccalta = ccalta.ccal_idccalta 
+            INNER JOIN carrerascursos as ccursos 
+            ON ccursos.cacu_idcarrcurs = ccalta.ccal_idcarrcurs 
+            where ccalta.ccal_estado = 'EJECUCION' 
+            and EXTRACT(YEAR FROM pag.paal_fechadeb) = anio
+            and ccursos.cacu_idcarrcurs = idcarrcurso 
+            and pag.paal_tipopago = 'CUOTA';
+	END;$$
+	
+--cuotas x fecha
+	
+	CREATE FUNCTION function_obtenercuotascarrcursxfecha(mes integer, anio integer, idcarrcurso varchar(10))
+	RETURNS TABLE
+	(
+		Pago_Cuotas bigint, 
+		Impago_Cuotas bigint,
+		Parcial_Cuotas bigint
+	)
+	language plpgsql
+	AS $$
+	BEGIN
+		RETURN QUERY 
+		SELECT SUM(CASE WHEN paal_estado = 'PAGO' THEN 1 ELSE 0 END ) as "Pago_Cuotas" , 
+            SUM(CASE WHEN paal_estado = 'IMPAGO' THEN 1 ELSE 0 END) as "Impago_Cuotas", 
+            SUM(CASE WHEN paal_estado = 'PARCIAL' THEN 1 ELSE 0 END) as "Parcial_Cuotas"
+            FROM pagoalumnos AS pag 
+            INNER JOIN alumnoscarreracurso AS alcc 
+            ON pag.paal_idalucarrcurs = alcc.alcc_idalucarrcurs 
+            INNER JOIN carrerascursosalta as ccalta 
+            ON alcc.alcc_idccalta = ccalta.ccal_idccalta 
+            INNER JOIN carrerascursos as ccursos 
+            ON ccursos.cacu_idcarrcurs = ccalta.ccal_idcarrcurs 
+            where ccalta.ccal_estado = 'EJECUCION' 
+			and EXTRACT(MONTH FROM pag.paal_fechadeb) = mes
+            and EXTRACT(YEAR FROM pag.paal_fechadeb) = anio
+            and ccursos.cacu_idcarrcurs = idcarrcurso 
+            and pag.paal_tipopago = 'CUOTA';
+	END;$$
+	
+-- matricula fecha
+	
+	CREATE FUNCTION function_obtenerMatriculasCarrCursxFecha(mes integer, anio integer, idcarrcurso varchar(10))
+	RETURNS TABLE
+	(
+		Pago_Matriculas bigint, 
+		Impago_Matriculas bigint,
+		Parcial_Matriculas bigint
+	)
+	language plpgsql
+	AS $$
+	BEGIN
+		RETURN QUERY 
+		SELECT SUM(CASE WHEN paal_estado = 'PAGO' THEN 1 ELSE 0 END ) as "Pago_Matriculas",
+            SUM(CASE WHEN paal_estado = 'IMPAGO' THEN 1 ELSE 0 END) as "Impago_Matriculas",
+            SUM(CASE WHEN paal_estado = 'PARCIAL' THEN 1 ELSE 0 END) as "Parcial_Matriculas" 
+            FROM pagoalumnos AS pag 
+            INNER JOIN alumnoscarreracurso AS alcc
+            ON pag.paal_idalucarrcurs = alcc.alcc_idalucarrcurs
+            INNER JOIN carrerascursosalta as ccalta
+            ON alcc.alcc_idccalta = ccalta.ccal_idccalta
+            INNER JOIN carrerascursos as ccursos
+            ON ccursos.cacu_idcarrcurs = ccalta.ccal_idcarrcurs
+            where ccalta.ccal_estado = 'EJECUCION'
+            and EXTRACT(MONTH FROM pag.paal_fechadeb) = mes and EXTRACT(YEAR FROM pag.paal_fechadeb) = anio
+            and ccursos.cacu_idcarrcurs = idcarrcurso
+            and pag.paal_tipopago = 'MATRICULA';
+	END;$$
+	
+-- matricula anio
+	
+	CREATE FUNCTION function_obtenerMatriculasCarrCursxAnio( anio integer, idcarrcurso varchar(10))
+	RETURNS TABLE
+	(
+		Pago_Matriculas bigint, 
+		Impago_Matriculas bigint,
+		Parcial_Matriculas bigint
+	)
+	language plpgsql
+	AS $$
+	BEGIN
+		RETURN QUERY 
+		SELECT SUM(CASE WHEN paal_estado = 'PAGO' THEN 1 ELSE 0 END ) as "Pago_Matriculas",
+            SUM(CASE WHEN paal_estado = 'IMPAGO' THEN 1 ELSE 0 END) as "Impago_Matriculas",
+            SUM(CASE WHEN paal_estado = 'PARCIAL' THEN 1 ELSE 0 END) as "Parcial_Matriculas" 
+            FROM pagoalumnos AS pag 
+            INNER JOIN alumnoscarreracurso AS alcc
+            ON pag.paal_idalucarrcurs = alcc.alcc_idalucarrcurs
+            INNER JOIN carrerascursosalta as ccalta
+            ON alcc.alcc_idccalta = ccalta.ccal_idccalta
+            INNER JOIN carrerascursos as ccursos
+            ON ccursos.cacu_idcarrcurs = ccalta.ccal_idcarrcurs
+            where ccalta.ccal_estado = 'EJECUCION'
+            and EXTRACT(YEAR FROM pag.paal_fechadeb) = anio
+            and ccursos.cacu_idcarrcurs = idcarrcurso
+            and pag.paal_tipopago = 'MATRICULA';
+	END;$$

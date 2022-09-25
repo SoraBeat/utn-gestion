@@ -1,0 +1,162 @@
+﻿body {
+    font-family: Helvetica;
+}
+
+.first {
+    background-color: #000000;
+    height: 70px;
+    color: white;
+}
+
+
+.encabezado {
+    margin-left: 330px;
+    margin-top: 15px;
+}
+
+    .encabezado h3 {
+        font-family: Helvetica;
+        font-weight: 400;
+        font-size: 30px;
+        color: #0366b0;
+    }
+
+
+
+.second {
+    color: white;
+    background-color: dimgray;
+    padding-top: 10px;
+    display: flex;
+    align-items: baseline;
+}
+
+    .second p {
+        font-family: Helvetica;
+        font-size: 12px;
+    }
+
+::placeholder {
+    font-size: 14px;
+    font-family: Helvetica;
+    padding-left: 5px;
+}
+
+.buscador {
+    display: flex;
+    flex-direction: row;
+}
+
+.buscar {
+    margin-left: 5px;
+}
+
+
+.third {
+    padding-left: 2px;
+    font-size: 12px;
+    height: 40px;
+}
+
+.item {
+    margin-left: 8px;
+}
+
+.fourth {
+    height: 150px;
+    overflow-y: scroll;
+    background-color: gainsboro;
+    font-size: 11px;
+}
+
+.chkboxlist td {
+    padding-top: 10px;
+    padding-left: 14px;
+    font-weight: 500;
+}
+
+.chkboxlist label {
+    padding-left: 10px;
+}
+
+#cblCarrera {
+    border-collapse: collapse;
+}
+
+    #cblCarrera td:nth-child(2n) {
+        padding-left: 5em;
+    }
+
+.sixth {
+    background-color: gainsboro;
+}
+
+.chkboxlistAnio label {
+    padding-left: 10px;
+}
+
+.chkboxlistMes td {
+    font-size: 11px;
+    padding-left: 22px;
+}
+
+.chkboxlistMes label {
+    padding-left: 10px;
+}
+
+.chkboxlistAnio td {
+    padding-left: 22px;
+    font-weight: 500;
+}
+
+.eighth {
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 10px;
+}
+
+.nineth {
+    margin-top: -20px;
+    margin-left:0px;
+    padding: 10px;
+
+}
+
+
+.ten {
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 0px;
+    padding: 10px;
+    background-color: gainsboro;
+}
+
+.tablaResultados th {
+    width: 100%;
+    background: #0366b0;
+    color: white;
+    padding: 10px 25px 10px 5px;
+    text-transform: capitalize;
+    text-align: left;
+    font-size: 14px;
+    font-family: Helvetica;
+}
+
+
+.tablaResultados td {
+    padding: 5px 5px;
+    font-size: 14px;
+    font-family: Helvetica;
+}
+
+.tablaResultados tr, td {
+    border: 1px inset transparent;
+}
+
+    .tablaResultados tr:not(:first-child) {
+        border-bottom: 1px solid #d4d4d4;
+    }
+
+        .tablaResultados tr:not(:first-child):hover {
+            background: #d4d4d4;
+        }
