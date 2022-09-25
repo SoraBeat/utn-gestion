@@ -36,7 +36,7 @@ namespace Dao
                 usuario.Nombre = fila["usua_nombre"].ToString();
                 usuario.Baja = fila["usua_baja"].ToString();
 
-                return usuario;
+                
 
                 /*
                 /// EL USUARIO EXISTE Y ESTA DE ALTA
@@ -59,7 +59,7 @@ namespace Dao
                 else { return 5; }
                 */
             }
-
+            return usuario;
             usuario = null;
             return usuario;
             /// EL USUARIO NO EXISTE NI COINCIDE 
