@@ -95,21 +95,6 @@
                 <asp:CheckBoxList ID="cblMes" runat="server" CssClass="chkboxlistMes" RepeatDirection="Horizontal" CellPadding="5"></asp:CheckBoxList>
             </div>
 
-            <div class="row second">
-                <div class="col">
-                    <p>SELECCIONE TIPOS DE PAGO  </p>
-                </div>
-
-            </div>
-            <div style="background-color: gainsboro;" class="row third">
-
-                <asp:RadioButtonList ID="rblTipoPago" runat="server" CssClass="chkboxlist" RepeatDirection="Horizontal">
-                    <asp:ListItem Selected="True">CUOTA</asp:ListItem>
-
-                    <asp:ListItem>MATRICULA</asp:ListItem>
-                </asp:RadioButtonList>
-
-            </div>
             <div class="row eighth">
                 <asp:Button ID="btnBuscar" runat="server" class="btn btn-primary" Text="BUSCAR" OnClick="btnBuscar_Click" />
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

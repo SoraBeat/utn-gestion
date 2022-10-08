@@ -71,22 +71,29 @@ namespace Negocio
             radioButtonList.DataBind();
         }
         
-        public DataTable obtenerDatosTabla(String descCarrera,RadioButtonList anio, CheckBoxList meses,RadioButtonList tipoPago)
+        public DataTable obtenerDatosTabla(String descCarrera,RadioButtonList anio, CheckBoxList meses)
         {
             DataTable tablaResuelta = new DataTable();
             tablaResuelta.Columns.Add("MES");
-            tablaResuelta.Columns.Add("CANT_TOTAL");
-            tablaResuelta.Columns.Add("CANT_PAGAS");
-            tablaResuelta.Columns.Add("CANT_PARCIALES");
-            tablaResuelta.Columns.Add("CANT_IMPAGAS");
-            tablaResuelta.Columns.Add("SUMA_PAGAS");
-            tablaResuelta.Columns.Add("SUMA_PARCIALES");
-            tablaResuelta.Columns.Add("SUMA_IMPAGAS");
+            tablaResuelta.Columns.Add("C_TOTAL");
+            tablaResuelta.Columns.Add("C_PAGAS");
+            tablaResuelta.Columns.Add("C_PARCIALES");
+            tablaResuelta.Columns.Add("C_IMPAGAS");
+            tablaResuelta.Columns.Add("C_$PAGAS");
+            tablaResuelta.Columns.Add("C_$PARCIALES");
+            tablaResuelta.Columns.Add("C_$IMPAGAS");
+            tablaResuelta.Columns.Add("M_TOTAL");
+            tablaResuelta.Columns.Add("M_PAGAS");
+            tablaResuelta.Columns.Add("M_PARCIALES");
+            tablaResuelta.Columns.Add("M_IMPAGAS");
+            tablaResuelta.Columns.Add("M_$PAGAS");
+            tablaResuelta.Columns.Add("M_$PARCIALES");
+            tablaResuelta.Columns.Add("M_$IMPAGAS");
 
             for (int i=0;i<meses.Items.Count;i++){
                 if (meses.Items[i].Selected)
                 {
-                    tablaResuelta.ImportRow(dao.traerDatos(descCarrera, anio.SelectedItem.Text, meses.Items[i].Value, meses.Items[i].Text, tipoPago.SelectedItem.Text));
+                    tablaResuelta.ImportRow(dao.traerDatos(descCarrera, anio.SelectedItem.Text, meses.Items[i].Value, meses.Items[i].Text));
                 }
             }
             return tablaResuelta;

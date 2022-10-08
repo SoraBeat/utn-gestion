@@ -51,14 +51,36 @@ namespace Vistas
                     if (cblCarrera.Items[i].Selected)
                     {
                         GridView grid = new GridView();
-                        Label titulo = new Label();
-                        titulo.Text = cblCarrera.Items[i].Text;
-                        grid.DataSource = negocioCarrerasCurso.obtenerDatosTabla(cblCarrera.Items[i].Text, rblAnio, cblMes, rblTipoPago);
+                        grid.AutoGenerateColumns = true;
+                        
+                        grid.DataSource = negocioCarrerasCurso.obtenerDatosTabla(cblCarrera.Items[i].Text, rblAnio, cblMes);
                         grid.DataBind();
                         grid.CssClass = "grid";
-                        titulo.CssClass = "grid-title";
-                        PlaceHolder1.Controls.Add(titulo);
                         PlaceHolder1.Controls.Add(grid);
+
+                        //titulo
+                        GridViewRow rowTitle = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Normal);
+                        TableHeaderCell cellTitle = new TableHeaderCell();
+                        cellTitle.Text = cblCarrera.Items[i].Text;
+                        cellTitle.ColumnSpan = 15;
+                        rowTitle.Controls.Add(cellTitle);
+                        grid.HeaderRow.Parent.Controls.AddAt(0, rowTitle);
+
+                        //subtiulos
+                        GridViewRow row = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Normal);
+                        TableHeaderCell cell = new TableHeaderCell();
+                        cell.Text = "";
+                        cell.ColumnSpan = 1;
+                        row.Controls.Add(cell);
+                        cell = new TableHeaderCell();
+                        cell.Text = "CUOTAS";
+                        cell.ColumnSpan = 7;
+                        row.Controls.Add(cell);
+                        cell = new TableHeaderCell();
+                        cell.Text = "MATRICULA";
+                        cell.ColumnSpan = 7;
+                        row.Controls.Add(cell);
+                        grid.HeaderRow.Parent.Controls.AddAt(1, row);
                     }
                 }
             }
