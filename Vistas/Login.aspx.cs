@@ -39,7 +39,7 @@ namespace Vistas
                     Session["IdUsuario"] = IdUsuario;
                 }
 
-                ///negusuariosubcuenta.obtenerSubcuentasDeUsuario();
+                negusuariosubcuenta.obtenerSubcuentasDeUsuario();
 
                 Response.Redirect("Inicio.aspx");
             }

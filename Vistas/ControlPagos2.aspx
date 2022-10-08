@@ -8,7 +8,28 @@
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./StyleSheet3.css" />
-
+    <style>
+        .column{
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+        }
+        .grid-title{
+            font-size:1rem;
+            font-weight:bold;
+        }
+        .grid{
+            background-color:black;
+            text-align:center;
+            font-size:1rem;
+            color:white;
+            margin-bottom:20px;
+        }
+        .grid td{
+            border:1px solid white;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -35,7 +56,7 @@
 
                 <div class="col buscador">
                     <asp:TextBox ID="tbxBusquedaTexto" runat="server" class="form-control rounded" placeholder="Buscar por nombre" OnTextChanged="tbxBusquedaTexto_TextChanged"></asp:TextBox>
-                    <asp:Button ID="btnBusquedaTexto" class="btn btn-primary buscar" runat="server" Text="Buscar" />
+                    <asp:Button ID="btnBusquedaTexto" class="btn btn-primary buscar" runat="server" Text="Buscar" OnClick="btnBusquedaTexto_Click" />
                 </div>
             </div>
 
@@ -66,7 +87,8 @@
             </div>
             <div class="row sixth">
 
-                <asp:CheckBoxList ID="cblAnio" CssClass="chkboxlistAnio" RepeatDirection="Horizontal" CellPadding="5" runat="server"></asp:CheckBoxList>
+                <asp:RadioButtonList ID="rblAnio" runat="server">
+                </asp:RadioButtonList>
             </div>
             <div class="row sixth">
 
@@ -82,10 +104,9 @@
             <div style="background-color: gainsboro;" class="row third">
 
                 <asp:RadioButtonList ID="rblTipoPago" runat="server" CssClass="chkboxlist" RepeatDirection="Horizontal">
-                    <asp:ListItem Selected="True">CUOTAS</asp:ListItem>
+                    <asp:ListItem Selected="True">CUOTA</asp:ListItem>
 
-                    <asp:ListItem>MATRICULAS</asp:ListItem>
-                    <asp:ListItem>AMBAS</asp:ListItem>
+                    <asp:ListItem>MATRICULA</asp:ListItem>
                 </asp:RadioButtonList>
 
             </div>
@@ -94,14 +115,14 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:Label ID="lblAdvertencia" Style="color: red;" runat="server" Text=""></asp:Label>
             </div>
-            <div class="row ten">
-                    <asp:GridView ID="grdBuscado" runat="server" CellPadding="5" CellSpacing="10"></asp:GridView>
+            <div class="column ten">
+                    <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
             </div>
             <div class="row nineth">
                 <div runat="server" id="resultadosConsultas">
                     <br />
                     <asp:Label ID="Label4" runat="server" Text="Informacion filtrada:" Visible="False"></asp:Label>
-                    <asp:Button ID="btnExportar" class="btn btn-success btn-sm"   runat="server" Text="Exportar" Visible="false" OnClick="btnExportar_Click" />
+                    <asp:Button ID="btnExportar" class="btn btn-success btn-sm"   runat="server" Text="Exportar" Visible="false"  />
                     <br />
                 </div>
             </div>

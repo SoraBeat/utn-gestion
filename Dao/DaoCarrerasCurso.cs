@@ -47,13 +47,13 @@ namespace Dao
                 consulta += "ORDER BY cacu_descripcion";
 
                 dt = accesoDatos.ObtenerTabla("Carreras", consulta);
-               // return dt;
+                // return dt;
             }
             else if (filtrosTipoCarrCurs == "Carrera")
             {
                 consulta = "SELECT cacu_idcarrcurs, cacu_descripcion FROM carrerascursos INNER JOIN susuarios_subcuentas ON carrerascursos.cacu_idsubcuen = susuarios_subcuentas.ussu_idsubcuenta WHERE ussu_idusuario = '" + idusuario + "' AND cacu_tipocarrcurs = 'CARRERA' AND (cacu_descripcion NOT LIKE '%NO USAR%') ";
 
-                 if (textoBusqueda != "")
+                if (textoBusqueda != "")
                 {
                     consulta += $"AND (cacu_descripcion LIKE '%{textoBusqueda}%') ";
                 }
@@ -63,13 +63,13 @@ namespace Dao
                 dt = accesoDatos.ObtenerTabla("Carreras", consulta);
                 //return dt;
             }
-            else if(filtrosTipoCarrCurs == "Curso")
+            else if (filtrosTipoCarrCurs == "Curso")
             {
                 consulta = "SELECT cacu_idcarrcurs, cacu_descripcion FROM carrerascursos INNER JOIN susuarios_subcuentas ON carrerascursos.cacu_idsubcuen = susuarios_subcuentas.ussu_idsubcuenta WHERE ussu_idusuario = '" + idusuario + "' AND cacu_tipocarrcurs = 'CURSO' AND cacu_descripcion NOT LIKE '%NO USAR%'";
 
 
 
-                 if (textoBusqueda != "")
+                if (textoBusqueda != "")
                 {
                     consulta += $"AND (cacu_descripcion LIKE '%{textoBusqueda}%') ";
                 }
@@ -77,14 +77,14 @@ namespace Dao
                 consulta += "ORDER BY cacu_descripcion";
 
                 dt = accesoDatos.ObtenerTabla("Carreras", consulta);
-               // return dt;
+                // return dt;
             }
             else if (filtrosTipoCarrCurs == "Maestria")
             {
                 consulta = "SELECT cacu_idcarrcurs, cacu_descripcion FROM carrerascursos INNER JOIN susuarios_subcuentas ON carrerascursos.cacu_idsubcuen = susuarios_subcuentas.ussu_idsubcuenta WHERE ussu_idusuario = '" + idusuario + "' AND cacu_tipocarrcurs = 'MAESTRIA'" +
                 "AND cacu_descripcion NOT LIKE '%NO USAR%' ";
 
-                 if (textoBusqueda != "")
+                if (textoBusqueda != "")
                 {
                     consulta += $"AND (cacu_descripcion LIKE '%{textoBusqueda}%') ";
                 }
@@ -92,7 +92,7 @@ namespace Dao
                 consulta += "ORDER BY cacu_descripcion";
 
                 dt = accesoDatos.ObtenerTabla("Carreras", consulta);
-              //  return dt;
+                //  return dt;
             }
             return dt;
         }
@@ -160,10 +160,10 @@ namespace Dao
             "ON alcc.alcc_idccalta = ccalta.ccal_idccalta " +
             "INNER JOIN carrerascursos as ccursos " +
             "ON ccursos.cacu_idcarrcurs = ccalta.ccal_idcarrcurs " +
-            "where ccalta.ccal_estado = 'EJECUCION' " + 
+            "where ccalta.ccal_estado = 'EJECUCION' " +
             "and EXTRACT(MONTH FROM pag.paal_fechadeb) = 11 and EXTRACT(YEAR FROM pag.paal_fechadeb) = 2021 " + // Interpolar fechas 
             "and ccursos.cacu_idcarrcurs = '4920001' " + // Interpolar id 
-            "and pag.paal_tipopago = 'CUOTA'";   
+            "and pag.paal_tipopago = 'CUOTA'";
 
             dt = accesoDatos.ObtenerTabla("Carreras", consulta);
 
@@ -176,7 +176,7 @@ namespace Dao
             string consulta = "SELECT SUM(CASE WHEN paal_estado = 'PAGO' THEN 1 ELSE 0 END ) as \"Pago_Matriculas\" ," +
             "SUM(CASE WHEN paal_estado = 'IMPAGO' THEN 1 ELSE 0 END) as \"Impago_Matriculas\"," +
             "SUM(CASE WHEN paal_estado = 'PARCIAL' THEN 1 ELSE 0 END) as \"Parcial_Matriculas\" ," +
-            "FROM pagoalumnos AS pag "+
+            "FROM pagoalumnos AS pag " +
             "INNER JOIN alumnoscarreracurso AS alcc" +
             "ON pag.paal_idalucarrcurs = alcc.alcc_idalucarrcurs" +
             "INNER JOIN carrerascursosalta as ccalta" +
@@ -253,7 +253,7 @@ namespace Dao
             NpgsqlCommand comando = new NpgsqlCommand();
             ArmarParametrosCarrCurso(ref comando, Mes, Año, idcarreraCurso);
 
-           return accesoDatos.EjecutarProcedimientoAlmacenado_DT(comando, "function_obteneralumnoscarrcursxfecha");
+            return accesoDatos.EjecutarProcedimientoAlmacenado_DT(comando, "function_obteneralumnoscarrcursxfecha");
 
         }
 
@@ -272,6 +272,52 @@ namespace Dao
 
             return accesoDatos.EjecutarProcedimientoAlmacenado_DT(comando, "function_obtenerMatriculasCarrCursxFecha");
 
+        }
+
+        public DataRow traerDatos(String descCarrera, String anio, String mes,String nombreMes, String tipoPago)
+        {
+            DataRow dt;
+            string consulta = "SELECT ('"+ nombreMes + "') AS MES " +
+",( " +
+"SELECT COUNT(*) FROM pagoalumnos " +
+"INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+"INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
+"INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+"WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '"+anio+"' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '"+mes+"' AND paal_tipopago = '"+tipoPago+"') AS CANT_TOTAL " +
+",( " +
+"SELECT COUNT(*) FROM pagoalumnos " +
+"INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+"INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
+"INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+"WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = '" + tipoPago + "' AND paal_estado = 'PAGO') AS CANT_PAGAS " +
+",(SELECT COUNT(*) FROM pagoalumnos " +
+"INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+"INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
+"INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+"WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = '" + tipoPago + "' AND paal_estado = 'PARCIAL') AS CANT_PARCIALES " +
+",(SELECT COUNT(*) FROM pagoalumnos " +
+"INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+"INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
+"INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+"WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = '" + tipoPago + "' AND paal_estado = 'IMPAGO') AS CANT_IMPAGAS " +
+",(SELECT CONCAT('$',CAST(COALESCE(SUM(paal_importepago),0) as varchar(50))) FROM pagoalumnos " +
+"INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+"INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
+"INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+"WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = '" + tipoPago + "' AND paal_estado = 'PAGO') AS SUMA_PAGAS " +
+",(SELECT CONCAT('$',CAST(COALESCE(SUM(paal_importepago),0) as varchar(50))) FROM pagoalumnos " +
+"INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+"INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
+"INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+"WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = '" + tipoPago + "' AND paal_estado = 'PARCIAL') AS SUMA_PARCIALES " +
+",(SELECT CONCAT('$',CAST(COALESCE(SUM(paal_importecuota),0) as varchar(50))) FROM pagoalumnos " +
+"INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+"INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
+"INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+"WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = '" + tipoPago + "' AND paal_estado = 'IMPAGO') AS SUMA_IMPAGAS ";
+
+            dt = accesoDatos.ObtenerFila("pagoAlumnos", consulta);
+            return dt;
         }
 
     }

@@ -60,13 +60,13 @@ namespace Vistas
         protected global::System.Web.UI.WebControls.CheckBoxList cblCarrera;
 
         /// <summary>
-        /// Control cblAnio.
+        /// Control rblAnio.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cblAnio;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblAnio;
 
         /// <summary>
         /// Control cblMes.
@@ -105,13 +105,13 @@ namespace Vistas
         protected global::System.Web.UI.WebControls.Label lblAdvertencia;
 
         /// <summary>
-        /// Control grdBuscado.
+        /// Control PlaceHolder1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grdBuscado;
+        protected global::System.Web.UI.WebControls.PlaceHolder PlaceHolder1;
 
         /// <summary>
         /// Control resultadosConsultas.

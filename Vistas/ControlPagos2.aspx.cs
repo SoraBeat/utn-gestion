@@ -18,8 +18,7 @@ namespace Vistas
 
         NegocioCarrerasCurso negocioCarrerasCurso = new NegocioCarrerasCurso();
         List<DataTable> tablasCarrerasCurso = new List<DataTable>();
-        DataTable dtPruebas = new DataTable();
-        DataView view;
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,7 +32,7 @@ namespace Vistas
             {
                 negocioCarrerasCurso.cargarDatosCarrerasCBL(idusuario, cblCarrera);
                 negocioCarrerasCurso.cargarDatosMesesCBL(cblMes);
-                negocioCarrerasCurso.cargarDatosAñosCBL(cblAnio);
+                negocioCarrerasCurso.cargarDatosAñosRBL(rblAnio);
             }
         }
 
@@ -48,154 +47,113 @@ namespace Vistas
             }
             else
             {
-                try
-                {
-
-                    tablasCarrerasCurso = negocioCarrerasCurso.ControlarBusqueda(cblCarrera, cblAnio, cblMes, rblTipoPago);
-
-                    //Si devuelve algún null le pide que ingrese bien los datos
-                    if (tablasCarrerasCurso != null)
+                for(int i=0;i<cblCarrera.Items.Count;i++){
+                    if (cblCarrera.Items[i].Selected)
                     {
-
-                        lblAdvertencia.Text = "";
-                        foreach (DataTable tablaCarreraCurso in tablasCarrerasCurso)
-                        {
-
-                            try
-                            {
-                                dtPruebas.Merge(tablaCarreraCurso);
-                                dtPruebas.AcceptChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                System.Diagnostics.Debug.WriteLine(ex);
-                            }
-                        }
-                        view = new DataView(dtPruebas);
-                        grdBuscado.DataSource = view;
-                        grdBuscado.DataBind();
-                        grdBuscado.CssClass = "tablaResultados";
-
-                        btnExportar.Visible = true;
-
+                        GridView grid = new GridView();
+                        Label titulo = new Label();
+                        titulo.Text = cblCarrera.Items[i].Text;
+                        grid.DataSource = negocioCarrerasCurso.obtenerDatosTabla(cblCarrera.Items[i].Text, rblAnio, cblMes, rblTipoPago);
+                        grid.DataBind();
+                        grid.CssClass = "grid";
+                        titulo.CssClass = "grid-title";
+                        PlaceHolder1.Controls.Add(titulo);
+                        PlaceHolder1.Controls.Add(grid);
                     }
-                    else
-                    {
-                        advertencia = "No se encontraron registros para la(s) consulta(s) de:\n";
-
-                        String aniosSeleccionados = String.Join(", ", cblAnio.Items.Cast<ListItem>().Where(i => i.Selected));
-                        String mesesSeleccionados = String.Join(", ", cblMes.Items.Cast<ListItem>().Where(i => i.Selected));
-
-                        foreach (ListItem item in cblCarrera.Items)
-                        {
-                            if (item.Selected)
-                            {
-                                advertencia += $"Carrera/Curso: {item.Text}, Año(s): {aniosSeleccionados}, Mes(es): {mesesSeleccionados}\n";
-                            }
-                        }
-
-
-                        lblAdvertencia.Text = advertencia;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine(ex.Message);
                 }
             }
-
         }
 
-        protected void btnExportar_Click(object sender, EventArgs e)
-        {
+        //protected void btnExportar_Click(object sender, EventArgs e)
+        //{
 
-            HttpResponse response = Response;
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter htw = new HtmlTextWriter(sw);
-            HtmlForm form = new HtmlForm();
+        //    HttpResponse response = Response;
+        //    StringWriter sw = new StringWriter();
+        //    HtmlTextWriter htw = new HtmlTextWriter(sw);
+        //    HtmlForm form = new HtmlForm();
 
 
-            try
-            {
-                if (grdBuscado.Rows.Count > 0)
-                {
-                    response.Clear();
-                    response.AddHeader("Content-Disposition", "attachment; filename= ControlPagos" + ".xls");
-                    response.ContentType = "application/vnd.xls";
+        //    try
+        //    {
+        //        if (grdBuscado.Rows.Count > 0)
+        //        {
+        //            response.Clear();
+        //            response.AddHeader("Content-Disposition", "attachment; filename= ControlPagos" + ".xls");
+        //            response.ContentType = "application/vnd.xls";
                     
 
-                    grdBuscado.HeaderRow.BackColor = Color.White;
+        //            grdBuscado.HeaderRow.BackColor = Color.White;
 
-                    foreach (TableCell cell in grdBuscado.HeaderRow.Cells)
+        //            foreach (TableCell cell in grdBuscado.HeaderRow.Cells)
 
-                    {
+        //            {
 
-                        cell.CssClass = "bhead";
+        //                cell.CssClass = "bhead";
 
-                    }
+        //            }
 
-                    foreach (GridViewRow row in grdBuscado.Rows)
+        //            foreach (GridViewRow row in grdBuscado.Rows)
 
-                    {
+        //            {
 
-                        row.BackColor = Color.White;
+        //                row.BackColor = Color.White;
 
-                        foreach (TableCell cell in row.Cells)
+        //                foreach (TableCell cell in row.Cells)
 
-                        {
+        //                {
 
-                            if (row.RowIndex % 2 == 0)
+        //                    if (row.RowIndex % 2 == 0)
 
-                            {
+        //                    {
 
-                                cell.CssClass = "bbody";
+        //                        cell.CssClass = "bbody";
 
-                            }
+        //                    }
 
-                            else
+        //                    else
 
-                            {
+        //                    {
 
-                                cell.BackColor = grdBuscado.RowStyle.BackColor;
+        //                        cell.BackColor = grdBuscado.RowStyle.BackColor;
 
-                            }
+        //                    }
 
-                        }
-                    }
+        //                }
+        //            }
 
-                    grdBuscado.RenderControl(htw);
-                    string style = @"<style> .bhead { 
+        //            grdBuscado.RenderControl(htw);
+        //            string style = @"<style> .bhead { 
                          
-                      background: #0366b0;
-                        color: white;
-                        padding: 10px 25px 10px 5px;
-                        text-align: left;
-                        font-size: 14px;
-                        }
-                        .bbody {
-                            padding: 5px 5px;
-                            font-size: 14px;
-                        }                    
+        //              background: #0366b0;
+        //                color: white;
+        //                padding: 10px 25px 10px 5px;
+        //                text-align: left;
+        //                font-size: 14px;
+        //                }
+        //                .bbody {
+        //                    padding: 5px 5px;
+        //                    font-size: 14px;
+        //                }                    
 
 
-                    } </style>";
+        //            } </style>";
 
-                    response.Write(style);
-                    response.Output.Write(sw.ToString());
-                    response.End();
-                }
-                else
-                {
-                    lblAdvertencia.Text = "Debe haber cursos para generar el excel!";
-                }
-            }
-            catch (Exception ex)
-            {
-                lblAdvertencia.Text = "No pudo generarse correctamente el excel";
-            }
+        //            response.Write(style);
+        //            response.Output.Write(sw.ToString());
+        //            response.End();
+        //        }
+        //        else
+        //        {
+        //            lblAdvertencia.Text = "Debe haber cursos para generar el excel!";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        lblAdvertencia.Text = "No pudo generarse correctamente el excel";
+        //    }
 
 
-        }
+        //}
 
         protected void rblistSeleccionCarrCurso_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -235,6 +193,9 @@ namespace Vistas
 
         }
 
+        protected void btnBusquedaTexto_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

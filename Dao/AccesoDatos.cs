@@ -69,7 +69,15 @@ namespace Dao
             adapter.Fill(dataset, nombreTabla);
             conexion.Close();
             return dataset.Tables[nombreTabla];
-
+        }
+        public DataRow ObtenerFila(String nombreTabla, String SQL)
+        {
+            DataSet dataset = new DataSet();
+            NpgsqlConnection conexion = ObtenerConexion();
+            NpgsqlDataAdapter adapter = ObtenerAdapter(SQL, conexion);
+            adapter.Fill(dataset, nombreTabla);
+            conexion.Close();
+            return dataset.Tables[nombreTabla].Rows[0];
         }
 
         public Boolean existe(String consulta)
