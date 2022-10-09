@@ -77,7 +77,7 @@ namespace Vistas
                         cell.ColumnSpan = 7;
                         row.Controls.Add(cell);
                         cell = new TableHeaderCell();
-                        cell.Text = "MATRICULA";
+                        cell.Text = "MATRICULA  ";
                         cell.ColumnSpan = 7;
                         row.Controls.Add(cell);
                         grid.HeaderRow.Parent.Controls.AddAt(1, row);
