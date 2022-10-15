@@ -10,6 +10,13 @@ using System.IO;
 using System.Drawing;
 using System.Web.UI.HtmlControls;
 using System.Text;
+using ClosedXML.Excel;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Data.SqlClient;
+
+
+
 
 namespace Vistas
 {
@@ -56,7 +63,7 @@ namespace Vistas
                         grid.DataSource = negocioCarrerasCurso.obtenerDatosTabla(cblCarrera.Items[i].Text, rblAnio, cblMes);
                         grid.DataBind();
                         grid.CssClass = "grid";
-                        PlaceHolder1.Controls.Add(grid);
+                        PlaceHolder.Controls.Add(grid);
 
                         //titulo
                         GridViewRow rowTitle = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Normal);

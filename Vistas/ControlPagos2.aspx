@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ControlPagos2.aspx.cs" Inherits="Vistas.ControlPagos2" %>
 
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -9,41 +8,69 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./StyleSheet3.css" />
     <style>
-        .column{
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
+        .grid table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 40px;
+            background-color: transparent;
         }
-        .grid-title{
-            font-size:1rem;
-            font-weight:bold;
+
+        .grid tbody {
+            display: table-header-group;
+            vertical-align: middle;
+            border-color: inherit;
+            text-align: center;
         }
-        .grid{
-            background-color:black;
-            text-align:center;
-            font-size:1rem;
-            color:white;
-            margin-bottom:20px;
+
+        .grid tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
         }
-        .grid td{
-            border:1px solid white;
+
+        .grid th {
+            color: #fff;
+            background-color: #212529;
+            border-color: #32383e;
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .grid td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+        .auto-style2 {
+            position: relative;
+            width: 97%;
+            min-height: 1px;
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 91.666667%;
+            flex: 0 0 91.666667%;
+            max-width: 91.666667%;
+            left: 0px;
+            top: 0px;
+            padding-left: 15px;
+            padding-right: 15px;
         }
     </style>
+
 </head>
 <body>
+    <div class="container-xxl">
     <form id="form1" runat="server">
         <div class="container-fluid">
             <div class="row first">
                 <div class="col">
                     <a href="Inicio.aspx">
-                            <img src="https://i.ibb.co/5KqDHdN/atras.png" alt="atras" border="0" width="10px" /></a>
-                    <img src="https://www.frgp.utn.edu.ar/public/frontend/assets/img/logo-utn.png" alt="atras" border="0" width="200px" style="margin-left:20px;" />
+                        <img src="https://i.ibb.co/5KqDHdN/atras.png" alt="atras" border="0" width="10px" /></a>
+                    <img src="https://www.frgp.utn.edu.ar/public/frontend/assets/img/logo-utn.png" alt="atras" border="0" width="200px" style="margin-left: 20px;" />
 
                 </div>
                 <div class="col">
                     <div class="encabezado">
-                        
+
                         <h3>CONTROL DE PAGOS</h3>
                     </div>
                 </div>
@@ -86,8 +113,7 @@
 
             </div>
             <div class="row sixth">
-
-                <asp:RadioButtonList ID="rblAnio" runat="server">
+                <asp:RadioButtonList ID="rblAnio" runat="server" RepeatDirection="Horizontal">
                 </asp:RadioButtonList>
             </div>
             <div class="row sixth">
@@ -95,24 +121,25 @@
                 <asp:CheckBoxList ID="cblMes" runat="server" CssClass="chkboxlistMes" RepeatDirection="Horizontal" CellPadding="5"></asp:CheckBoxList>
             </div>
 
-            <div class="row eighth">
-                <asp:Button ID="btnBuscar" runat="server" class="btn btn-primary" Text="BUSCAR" OnClick="btnBuscar_Click" />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="row eighth">
+                    <asp:Button ID="btnBuscar" runat="server" class="btn btn-primary" Text="BUSCAR" OnClick="btnBuscar_Click" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:Label ID="lblAdvertencia" Style="color: red;" runat="server" Text=""></asp:Label>
-            </div>
-            <div class="column ten">
-                    <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
-            </div>
-            <div class="row nineth">
-                <div runat="server" id="resultadosConsultas">
-                    <br />
-                    <asp:Label ID="Label4" runat="server" Text="Informacion filtrada:" Visible="False"></asp:Label>
-                    <asp:Button ID="btnExportar" class="btn btn-success btn-sm"   runat="server" Text="Exportar" Visible="false"  />
-                    <br />
+                </div>
+                <div class="ResultadosTabla">
+                    &nbsp;<asp:PlaceHolder ID="PlaceHolder" runat="server"></asp:PlaceHolder>
+                </div>
+                <div class="row nineth">
                 </div>
             </div>
-
         </div>
+                    <div runat="server" id="resultadosConsultas">
+                        <br />
+                        <asp:Label ID="Label4" runat="server" Text="Informacion filtrada:" Visible="False"></asp:Label>
+                        <asp:Button ID="btnExportar" class="btn btn-success btn-sm" runat="server" Text="Exportar" Visible="false" />
+                        <br />
+                    </div>
+                </body>
     </form>
-</body>
+        
 </html>
