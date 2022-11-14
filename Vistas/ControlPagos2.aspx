@@ -41,20 +41,7 @@
             vertical-align: top;
             border-top: 1px solid #dee2e6;
         }
-        .auto-style2 {
-            position: relative;
-            width: 97%;
-            min-height: 1px;
-            -webkit-box-flex: 0;
-            -ms-flex: 0 0 91.666667%;
-            flex: 0 0 91.666667%;
-            max-width: 91.666667%;
-            left: 0px;
-            top: 0px;
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-    </style>
+        </style>
 
 </head>
 <body>
@@ -83,7 +70,7 @@
 
                 <div class="col buscador">
                     <asp:TextBox ID="tbxBusquedaTexto" runat="server" class="form-control rounded" placeholder="Buscar por nombre" OnTextChanged="tbxBusquedaTexto_TextChanged"></asp:TextBox>
-                    <asp:Button ID="btnBusquedaTexto" class="btn btn-primary buscar" runat="server" Text="Buscar" OnClick="btnBusquedaTexto_Click" />
+                    <asp:Button ID="btnBusquedaTexto" class="btn btn-primary buscar" runat="server" Text="Buscar" />
                 </div>
             </div>
 
@@ -135,8 +122,10 @@
         </div>
                     <div runat="server" id="resultadosConsultas">
                         <br />
-                        <asp:Label ID="Label4" runat="server" Text="Informacion filtrada:" Visible="False"></asp:Label>
-                        <asp:Button ID="btnExportar" class="btn btn-success btn-sm" runat="server" Text="Exportar" Visible="false" />
+                        <asp:Label ID="Label4" runat="server" Text="Informacion filtrada:                                                                          " Visible="False" CssClass="mr-4"></asp:Label>
+                        <asp:Button ID="btnExportar" class="btn btn-success btn-sm ml-4" runat="server" Text="EXPORTAR" OnClick="btnExportar_Click" Visible="False" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:ImageButton ID="btnRefresh" runat="server" CssClass="mt-2" ForeColor="White" Height="24px" ImageUrl="https://www.vhv.rs/dpng/d/570-5706067_update-reload-refresh-refresh-png-icon-transparent-png.png" OnClick="btnRefresh_Click" Visible="False" />
                         <br />
                     </div>
                 </body>

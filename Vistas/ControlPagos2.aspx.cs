@@ -57,7 +57,9 @@ namespace Vistas
                 for(int i=0;i<cblCarrera.Items.Count;i++){
                     if (cblCarrera.Items[i].Selected)
                     {
+                        
                         GridView grid = new GridView();
+                        
                         grid.AutoGenerateColumns = true;
                         
                         grid.DataSource = negocioCarrerasCurso.obtenerDatosTabla(cblCarrera.Items[i].Text, rblAnio, cblMes);
@@ -88,101 +90,106 @@ namespace Vistas
                         cell.ColumnSpan = 7;
                         row.Controls.Add(cell);
                         grid.HeaderRow.Parent.Controls.AddAt(1, row);
+
+                        Session["GridView"] = grid;
+                        btnExportar.Visible = true;
+                        btnRefresh.Visible = true;
                     }
                 }
             }
         }
 
-        //protected void btnExportar_Click(object sender, EventArgs e)
-        //{
+        protected void btnExportar_Click(object sender, EventArgs e)
+        {
 
-        //    HttpResponse response = Response;
-        //    StringWriter sw = new StringWriter();
-        //    HtmlTextWriter htw = new HtmlTextWriter(sw);
-        //    HtmlForm form = new HtmlForm();
+            HttpResponse response = Response;
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            HtmlForm form = new HtmlForm();
+            GridView grdBuscado = (GridView)Session["GridView"];
 
 
-        //    try
-        //    {
-        //        if (grdBuscado.Rows.Count > 0)
-        //        {
-        //            response.Clear();
-        //            response.AddHeader("Content-Disposition", "attachment; filename= ControlPagos" + ".xls");
-        //            response.ContentType = "application/vnd.xls";
-                    
+            try
+            {
+                if (grdBuscado.Rows.Count > 0)
+                {
+                    response.Clear();
+                    response.AddHeader("Content-Disposition", "attachment; filename= ControlPagos" + ".xls");
+                    response.ContentType = "application/vnd.xls";
 
-        //            grdBuscado.HeaderRow.BackColor = Color.White;
 
-        //            foreach (TableCell cell in grdBuscado.HeaderRow.Cells)
+                    grdBuscado.HeaderRow.BackColor = Color.White;
 
-        //            {
+                    foreach (TableCell cell in grdBuscado.HeaderRow.Cells)
 
-        //                cell.CssClass = "bhead";
+                    {
 
-        //            }
+                        cell.CssClass = "bhead";
 
-        //            foreach (GridViewRow row in grdBuscado.Rows)
+                    }
 
-        //            {
+                    foreach (GridViewRow row in grdBuscado.Rows)
 
-        //                row.BackColor = Color.White;
+                    {
 
-        //                foreach (TableCell cell in row.Cells)
+                        row.BackColor = Color.White;
 
-        //                {
+                        foreach (TableCell cell in row.Cells)
 
-        //                    if (row.RowIndex % 2 == 0)
+                        {
 
-        //                    {
+                            if (row.RowIndex % 2 == 0)
 
-        //                        cell.CssClass = "bbody";
+                            {
 
-        //                    }
+                                cell.CssClass = "bbody";
 
-        //                    else
+                            }
 
-        //                    {
+                            else
 
-        //                        cell.BackColor = grdBuscado.RowStyle.BackColor;
+                            {
 
-        //                    }
+                                cell.BackColor = grdBuscado.RowStyle.BackColor;
 
-        //                }
-        //            }
+                            }
 
-        //            grdBuscado.RenderControl(htw);
-        //            string style = @"<style> .bhead { 
+                        }
+                    }
+
+                    grdBuscado.RenderControl(htw);
+                    string style = @"<style> .bhead { 
                          
-        //              background: #0366b0;
-        //                color: white;
-        //                padding: 10px 25px 10px 5px;
-        //                text-align: left;
-        //                font-size: 14px;
-        //                }
-        //                .bbody {
-        //                    padding: 5px 5px;
-        //                    font-size: 14px;
-        //                }                    
+                      background: #0366b0;
+                        color: white;
+                        padding: 10px 25px 10px 5px;
+                        text-align: left;
+                        font-size: 14px;
+                        }
+                        .bbody {
+                            padding: 5px 5px;
+                            font-size: 14px;
+                        }                    
 
 
-        //            } </style>";
+                    } </style>";
 
-        //            response.Write(style);
-        //            response.Output.Write(sw.ToString());
-        //            response.End();
-        //        }
-        //        else
-        //        {
-        //            lblAdvertencia.Text = "Debe haber cursos para generar el excel!";
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        lblAdvertencia.Text = "No pudo generarse correctamente el excel";
-        //    }
+                    response.Write(style);
+                    response.Output.Write(sw.ToString());
+                    response.End();
+                }
+                else
+                {
+                    lblAdvertencia.Text = "Debe haber cursos para generar el excel!";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblAdvertencia.Text = "No pudo generarse correctamente el excel";
+            }
 
 
-        //}
+        }
 
         protected void rblistSeleccionCarrCurso_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -222,8 +229,12 @@ namespace Vistas
 
         }
 
-        protected void btnBusquedaTexto_Click(object sender, EventArgs e)
+        protected void btnRefresh_Click(object sender, ImageClickEventArgs e)
         {
+            
+            Session["GridView"] = null;
+            btnRefresh.Visible = false;
+            btnExportar.Visible = false;
 
         }
     }

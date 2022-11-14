@@ -16,9 +16,9 @@ namespace Dao
         private const String port = "5432";
         private const String dataBase = "proy_sacc";
         private const String username = "postgres";
-        private const String password = "1234";
+        private const String password = "root";
 
-        // password = "root"
+        //password = "root"
         // dataBase = "sacc"
 
         private String rutaDB = $"Server=localhost;Port={port};Database={dataBase};" +
