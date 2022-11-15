@@ -54,12 +54,15 @@ namespace Vistas
             }
             else
             {
-                for(int i=0;i<cblCarrera.Items.Count;i++){
+                List<GridView> lstGridViews = new List<GridView>();
+
+                for (int i=0;i<cblCarrera.Items.Count;i++){
                     if (cblCarrera.Items[i].Selected)
                     {
                         
                         GridView grid = new GridView();
                         
+
                         grid.AutoGenerateColumns = true;
                         
                         grid.DataSource = negocioCarrerasCurso.obtenerDatosTabla(cblCarrera.Items[i].Text, rblAnio, cblMes);
@@ -91,7 +94,9 @@ namespace Vistas
                         row.Controls.Add(cell);
                         grid.HeaderRow.Parent.Controls.AddAt(1, row);
 
-                        Session["GridView"] = grid;
+                        lstGridViews.Add(grid);
+
+                        Session["lstGridViews"] = lstGridViews;
                         btnExportar.Visible = true;
                         btnRefresh.Visible = true;
                     }
@@ -101,34 +106,70 @@ namespace Vistas
 
         protected void btnExportar_Click(object sender, EventArgs e)
         {
-
             HttpResponse response = Response;
             StringWriter sw = new StringWriter();
             HtmlTextWriter htw = new HtmlTextWriter(sw);
             HtmlForm form = new HtmlForm();
-            GridView grdBuscado = (GridView)Session["GridView"];
+            List<GridView> lstGridViews =(List<GridView>)Session["lstGridViews"];
 
+            //response.Clear();
+            //response.AddHeader("Content-Disposition", "attachment; filename= ControlPagos" + ".xls");
+            //response.ContentType = "application/vnd.xls";
 
+            //foreach (var grid in lstGridViews)
+            //{
+            //    grid.AllowPaging = false;
+            //    Table table = new Table();
+            //    table.GridLines = grid.GridLines;
+            //    if (grid.Caption != null)
+            //    {
+            //        TableCell cell = new TableCell();
+            //        cell.Text = grid.Caption;
+            //        cell.ColumnSpan = 10;
+            //        TableRow tr = new TableRow();
+            //        tr.Controls.Add(cell);
+            //        table.Rows.Add(tr);
+            //    }
+            //    if (grid.HeaderRow != null)
+            //    {
+            //        table.Rows.Add(grid.HeaderRow);
+            //    }
+            //    foreach (GridViewRow row in grid.Rows)
+            //    {
+            //        table.Rows.Add(row);
+            //    }
+            //    if (grid.FooterRow != null)
+            //    {
+            //        table.Rows.Add(grid.FooterRow);
+            //    }
+            //    table.RenderControl(htw);
+            //}
+            //    String headerTable = "<table width='100%' class='TestCssStyle'><tr><td><h4>REPORTE</h4>" + "</td><td></td><td><h4>" + DateTime.Now.ToString("d") + "</h4></td></tr></table>";
+            //    response.Write(headerTable);
+            //    response.Write(sw.ToString());
+            //    response.End();
             try
             {
-                if (grdBuscado.Rows.Count > 0)
-                {
+                foreach (var grid in lstGridViews) {
+
                     response.Clear();
                     response.AddHeader("Content-Disposition", "attachment; filename= ControlPagos" + ".xls");
                     response.ContentType = "application/vnd.xls";
+                    grid.AllowPaging = false;
+                    grid.HeaderRow.BackColor = Color.White;
 
 
-                    grdBuscado.HeaderRow.BackColor = Color.White;
 
-                    foreach (TableCell cell in grdBuscado.HeaderRow.Cells)
+                    foreach (TableCell cell in grid.HeaderRow.Cells)
 
                     {
 
                         cell.CssClass = "bhead";
 
+
                     }
 
-                    foreach (GridViewRow row in grdBuscado.Rows)
+                    foreach (GridViewRow row in grid.Rows)
 
                     {
 
@@ -150,38 +191,36 @@ namespace Vistas
 
                             {
 
-                                cell.BackColor = grdBuscado.RowStyle.BackColor;
+                                cell.BackColor = grid.RowStyle.BackColor;
 
                             }
 
                         }
                     }
 
-                    grdBuscado.RenderControl(htw);
+                    grid.RenderControl(htw);
+
+                }
                     string style = @"<style> .bhead { 
                          
-                      background: #0366b0;
-                        color: white;
-                        padding: 10px 25px 10px 5px;
-                        text-align: left;
-                        font-size: 14px;
-                        }
-                        .bbody {
-                            padding: 5px 5px;
+                          background: #0366b0;
+                            color: white;
+                            padding: 10px 25px 10px 5px;
+                            text-align: left;
                             font-size: 14px;
-                        }                    
+                            }
+                            .bbody {
+                                padding: 5px 5px;
+                                font-size: 14px;
+                            }                    
 
 
-                    } </style>";
+                        } </style>";
 
                     response.Write(style);
                     response.Output.Write(sw.ToString());
                     response.End();
-                }
-                else
-                {
-                    lblAdvertencia.Text = "Debe haber cursos para generar el excel!";
-                }
+                
             }
             catch (Exception ex)
             {
@@ -231,8 +270,8 @@ namespace Vistas
 
         protected void btnRefresh_Click(object sender, ImageClickEventArgs e)
         {
-            
-            Session["GridView"] = null;
+
+            Session["lstGridViews"] = null;
             btnRefresh.Visible = false;
             btnExportar.Visible = false;
 
