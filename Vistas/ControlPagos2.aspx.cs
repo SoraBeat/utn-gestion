@@ -73,7 +73,7 @@ namespace Vistas
                         //titulo
                         GridViewRow rowTitle = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Normal);
                         TableHeaderCell cellTitle = new TableHeaderCell();
-                        cellTitle.Text = cblCarrera.Items[i].Text +" Periodo: "+rblAnio.SelectedItem.Text+" Fecha de reporte: " +DateTime.Now.ToString("d");
+                        cellTitle.Text = cblCarrera.Items[i].Text +"     Periodo: "+rblAnio.SelectedItem.Text+"     Fecha de reporte: " +DateTime.Now.ToString("d");
                         cellTitle.ColumnSpan = 15;
                         rowTitle.Controls.Add(cellTitle);
                         grid.HeaderRow.Parent.Controls.AddAt(0, rowTitle);
