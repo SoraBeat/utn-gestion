@@ -73,7 +73,7 @@ namespace Vistas
                         //titulo
                         GridViewRow rowTitle = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Normal);
                         TableHeaderCell cellTitle = new TableHeaderCell();
-                        cellTitle.Text = cblCarrera.Items[i].Text;
+                        cellTitle.Text = cblCarrera.Items[i].Text +" Periodo: "+rblAnio.SelectedItem.Text+" Fecha de reporte: " +DateTime.Now.ToString("d");
                         cellTitle.ColumnSpan = 15;
                         rowTitle.Controls.Add(cellTitle);
                         grid.HeaderRow.Parent.Controls.AddAt(0, rowTitle);
@@ -112,48 +112,12 @@ namespace Vistas
             HtmlForm form = new HtmlForm();
             List<GridView> lstGridViews =(List<GridView>)Session["lstGridViews"];
 
-            //response.Clear();
-            //response.AddHeader("Content-Disposition", "attachment; filename= ControlPagos" + ".xls");
-            //response.ContentType = "application/vnd.xls";
-
-            //foreach (var grid in lstGridViews)
-            //{
-            //    grid.AllowPaging = false;
-            //    Table table = new Table();
-            //    table.GridLines = grid.GridLines;
-            //    if (grid.Caption != null)
-            //    {
-            //        TableCell cell = new TableCell();
-            //        cell.Text = grid.Caption;
-            //        cell.ColumnSpan = 10;
-            //        TableRow tr = new TableRow();
-            //        tr.Controls.Add(cell);
-            //        table.Rows.Add(tr);
-            //    }
-            //    if (grid.HeaderRow != null)
-            //    {
-            //        table.Rows.Add(grid.HeaderRow);
-            //    }
-            //    foreach (GridViewRow row in grid.Rows)
-            //    {
-            //        table.Rows.Add(row);
-            //    }
-            //    if (grid.FooterRow != null)
-            //    {
-            //        table.Rows.Add(grid.FooterRow);
-            //    }
-            //    table.RenderControl(htw);
-            //}
-            //    String headerTable = "<table width='100%' class='TestCssStyle'><tr><td><h4>REPORTE</h4>" + "</td><td></td><td><h4>" + DateTime.Now.ToString("d") + "</h4></td></tr></table>";
-            //    response.Write(headerTable);
-            //    response.Write(sw.ToString());
-            //    response.End();
             try
             {
                 foreach (var grid in lstGridViews) {
 
                     response.Clear();
-                    response.AddHeader("Content-Disposition", "attachment; filename= ControlPagos" + ".xls");
+                    response.AddHeader("Content-Disposition", "attachment; filename= Reporte_Control_Pagos" + ".xls");
                     response.ContentType = "application/vnd.xls";
                     grid.AllowPaging = false;
                     grid.HeaderRow.BackColor = Color.White;
