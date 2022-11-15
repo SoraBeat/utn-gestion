@@ -94,6 +94,14 @@ namespace Vistas
                         row.Controls.Add(cell);
                         grid.HeaderRow.Parent.Controls.AddAt(1, row);
 
+                        foreach (TableCell celda in grid.HeaderRow.Cells)
+
+                        {
+                            celda.Text = celda.Text.Replace("C_", "");
+                            celda.Text = celda.Text.Replace("M_", "");
+                            celda.CssClass = "col";
+                        }
+
                         lstGridViews.Add(grid);
 
                         Session["lstGridViews"] = lstGridViews;
