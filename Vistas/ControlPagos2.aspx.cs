@@ -45,7 +45,8 @@ namespace Vistas
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            String advertencia;
+            String advertencia ="";
+            lblAdvertencia.Text = advertencia;
 
             if (!verificarCBLMarcado(cblCarrera))
             {
