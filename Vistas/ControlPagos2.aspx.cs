@@ -47,6 +47,8 @@ namespace Vistas
         {
             String advertencia ="";
             lblAdvertencia.Text = advertencia;
+            PlaceHolder.Controls.Clear();
+            Session["lstGridViews"] = "";
 
             if (!verificarCBLMarcado(cblCarrera))
             {
@@ -62,7 +64,6 @@ namespace Vistas
                     {
                         
                         GridView grid = new GridView();
-                        
 
                         grid.AutoGenerateColumns = true;
                         
@@ -100,7 +101,7 @@ namespace Vistas
                         {
                             celda.Text = celda.Text.Replace("C_", "");
                             celda.Text = celda.Text.Replace("M_", "");
-                            celda.CssClass = "col";
+                            celda.CssClass = "col px-2";
                         }
 
                         lstGridViews.Add(grid);
