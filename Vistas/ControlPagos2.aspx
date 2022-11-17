@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"/>
     <link rel="stylesheet" href="./StyleSheet3.css" />
     <style>
+        .grid{
+            font-size: 0.920em;
+        }
         .grid table {
             width: 100%;
             max-width: 100%;
@@ -49,6 +52,9 @@
             bottom: 25px;
             right: 25px;
             display: none;
+        }
+        .auto-style1 {
+            width: 983px;
         }
     </style>
 
@@ -117,24 +123,22 @@
                 </div>
                 <div class="row eighth">
                     <asp:Button ID="btnBuscar" runat="server" class="btn btn-primary col-2" Text="BUSCAR" OnClick="btnBuscar_Click" />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Label ID="lblAdvertencia" Style="color: red;" runat="server" Text=""></asp:Label>
+                    <asp:Label ID="lblAdvertencia" Style="color: red;" runat="server" Text=""></asp:Label>
                 </div>
-                <div class="row ResultadosTabla">
-                    &nbsp;<asp:PlaceHolder ID="PlaceHolder" runat="server"></asp:PlaceHolder>
+                <asp:Panel ID="Panel1" runat="server" BackColor="#E0E0E0" ScrollBars="Auto" Style="z-index: 100;" Width="100%">
+                    <asp:PlaceHolder ID="PlaceHolder" runat="server"></asp:PlaceHolder>
+                </asp:Panel>
+
+                <div runat="server" id="resultadosConsultas">
+                <div class="row p-4">
+                    <asp:Label class="col-2" ID="Label4" runat="server" Text="Informacion filtrada:" Visible="False"></asp:Label>
+                    <asp:Button ID="btnExportar" class="btn btn-success btn-sm ml-4 col-2" runat="server" Text="EXPORTAR" OnClick="btnExportar_Click" Visible="False" />
+                    <asp:Button ID="btnRefresh" class="btn btn-success btn-sm ml-4 col-2 mx-2" runat="server" Text="VOLVER A BUSCAR" OnClick="btnRefresh_Click" Visible="False" />
                 </div>
-                <div class="row nineth">
-                </div>
+            </div>
             </div>
         
-            <div runat="server" id="resultadosConsultas">
-                <br />
-                <asp:Label ID="Label4" runat="server" Text="Informacion filtrada:                                                                          " Visible="False" CssClass="mr-4"></asp:Label>
-                <asp:Button ID="btnExportar" class="btn btn-success btn-sm ml-4" runat="server" Text="EXPORTAR" OnClick="btnExportar_Click" Visible="False" />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <asp:ImageButton ID="btnRefresh" runat="server" CssClass="mt-2" ForeColor="White" Height="24px" ImageUrl="https://www.vhv.rs/dpng/d/570-5706067_update-reload-refresh-refresh-png-icon-transparent-png.png" OnClick="btnRefresh_Click" Visible="False" />
-                <br />
-            </div>
+            
             </form>
     </div>
     

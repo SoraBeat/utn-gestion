@@ -47,8 +47,7 @@ namespace Vistas
         {
             String advertencia ="";
             lblAdvertencia.Text = advertencia;
-            PlaceHolder.Controls.Clear();
-            Session["lstGridViews"] = "";
+            
 
             if (!verificarCBLMarcado(cblCarrera))
             {
@@ -62,9 +61,7 @@ namespace Vistas
                 for (int i=0;i<cblCarrera.Items.Count;i++){
                     if (cblCarrera.Items[i].Selected)
                     {
-                        
                         GridView grid = new GridView();
-
                         grid.AutoGenerateColumns = true;
                         
                         grid.DataSource = negocioCarrerasCurso.obtenerDatosTabla(cblCarrera.Items[i].Text, rblAnio, cblMes);
@@ -105,10 +102,13 @@ namespace Vistas
                         }
 
                         lstGridViews.Add(grid);
-
                         Session["lstGridViews"] = lstGridViews;
+                        Label4.Visible = true;
                         btnExportar.Visible = true;
                         btnRefresh.Visible = true;
+                        btnBuscar.Visible = false;
+                        
+
                     }
                 }
             }
@@ -242,12 +242,13 @@ namespace Vistas
 
         }
 
-        protected void btnRefresh_Click(object sender, ImageClickEventArgs e)
+        protected void btnRefresh_Click(object sender, EventArgs e)
         {
-
             Session["lstGridViews"] = null;
+            Label4.Visible = false;
             btnRefresh.Visible = false;
             btnExportar.Visible = false;
+            btnBuscar.Visible = true;
 
         }
     }
