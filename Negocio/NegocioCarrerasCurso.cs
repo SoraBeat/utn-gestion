@@ -90,6 +90,7 @@ namespace Negocio
             tablaResuelta.Columns.Add("M_$PARCIALES");
             tablaResuelta.Columns.Add("M_$IMPAGAS");
 
+
             for (int i=0;i<meses.Items.Count;i++){
                 if (meses.Items[i].Selected)
                 {
@@ -98,6 +99,7 @@ namespace Negocio
             }
             return tablaResuelta;
         }
+
 
 
     }

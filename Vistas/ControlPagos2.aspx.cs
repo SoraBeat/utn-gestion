@@ -64,7 +64,7 @@ namespace Vistas
                         GridView grid = new GridView();
                         grid.AutoGenerateColumns = true;
                         
-                        grid.DataSource = negocioCarrerasCurso.obtenerDatosTabla(cblCarrera.Items[i].Text, rblAnio, cblMes);
+                        grid.DataSource =  negocioCarrerasCurso.obtenerDatosTabla(cblCarrera.Items[i].Text, rblAnio, cblMes);
                         grid.DataBind();
                         grid.CssClass = "grid";
                         PlaceHolder.Controls.Add(grid);
@@ -93,6 +93,58 @@ namespace Vistas
                         row.Controls.Add(cell);
                         grid.HeaderRow.Parent.Controls.AddAt(1, row);
 
+                        //TOTALES
+                        GridViewRow footer = grid.FooterRow;
+                        int celdas = footer.Cells.Count;
+                        GridViewRow newRow = new GridViewRow(0, 0, footer.RowType, footer.RowState);
+
+
+                        double[] totales = new double[14] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                        foreach (GridViewRow celda1 in grid.Rows)
+                        {
+                            for (int j = 1; j < 15; j++)
+                            {
+                                totales[j-1] += Double.Parse(celda1.Cells[j].Text.Replace("$", ""));
+                            }
+
+                        }
+
+                        for (int z = 0; z < celdas; z++)
+                        {
+                            if (z == 0)
+                            {
+                                TableCell celdaFooter = new TableCell();
+                                Label campo = new Label();
+                                campo.Text = "TOTALES";
+                                celdaFooter.Controls.Add(campo);
+                                newRow.Cells.Add(celdaFooter);
+                            }
+                            else
+                            {
+                                if(z==5 || z==6 || z==7 || z==12 || z == 13 || z == 14)
+                                {
+                                    TableCell celdaFooter = new TableCell();
+                                    Label campo = new Label();
+                                    campo.Text = "$"+totales[z - 1].ToString();
+                                    celdaFooter.Controls.Add(campo);
+                                    newRow.Cells.Add(celdaFooter);
+                                }
+                                else
+                                {
+                                    TableCell celdaFooter = new TableCell();
+                                    Label campo = new Label();
+                                    campo.Text = totales[z - 1].ToString();
+                                    celdaFooter.Controls.Add(campo);
+                                    newRow.Cells.Add(celdaFooter);
+                                }
+                                
+                            }
+
+                            
+
+                        }
+                        grid.FooterRow.Parent.Controls.Add(newRow);
+
                         foreach (TableCell celda in grid.HeaderRow.Cells)
 
                         {
@@ -100,6 +152,10 @@ namespace Vistas
                             celda.Text = celda.Text.Replace("M_", "");
                             celda.CssClass = "col px-2";
                         }
+/*
+                       
+
+                        lblAdvertencia.Text = totales[13].ToString();*/
 
                         lstGridViews.Add(grid);
                         Session["lstGridViews"] = lstGridViews;
