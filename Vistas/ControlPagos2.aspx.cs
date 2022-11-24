@@ -73,7 +73,7 @@ namespace Vistas
                         GridViewRow rowTitle = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Normal);
                         TableHeaderCell cellTitle = new TableHeaderCell();
                         cellTitle.Text = cblCarrera.Items[i].Text +"     Periodo: "+rblAnio.SelectedItem.Text+"     Fecha de reporte: " +DateTime.Now.ToString("d");
-                        cellTitle.ColumnSpan = 15;
+                        cellTitle.ColumnSpan = 20;
                         rowTitle.Controls.Add(cellTitle);
                         grid.HeaderRow.Parent.Controls.AddAt(0, rowTitle);
 
@@ -91,20 +91,41 @@ namespace Vistas
                         cell.Text = "MATRICULA  ";
                         cell.ColumnSpan = 7;
                         row.Controls.Add(cell);
+                        cell = new TableHeaderCell();
+                        cell.Text = "BECAS";
+                        cell.ColumnSpan = 2;
+                        row.Controls.Add(cell);
+                        cell = new TableHeaderCell();
+                        cell.Text = "DESCUENTOS  ";
+                        cell.ColumnSpan = 2;
+                        row.Controls.Add(cell);
+                        cell = new TableHeaderCell();
+                        cell.Text = "TOTAL  ";
+                        cell.ColumnSpan = 1;
+                        row.Controls.Add(cell);
                         grid.HeaderRow.Parent.Controls.AddAt(1, row);
 
                         //TOTALES
+                        
                         GridViewRow footer = grid.FooterRow;
                         int celdas = footer.Cells.Count;
                         GridViewRow newRow = new GridViewRow(0, 0, footer.RowType, footer.RowState);
 
 
-                        double[] totales = new double[14] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                        double[] totales = new double[19] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0 };
                         foreach (GridViewRow celda1 in grid.Rows)
                         {
-                            for (int j = 1; j < 15; j++)
+                            for (int j = 1; j < 20; j++)
                             {
-                                totales[j-1] += Double.Parse(celda1.Cells[j].Text.Replace("$", ""));
+                                if(celda1.Cells[j].Text != "&nbsp;")
+                                {
+                                    totales[j - 1] += Double.Parse(celda1.Cells[j].Text.Replace("$", ""));
+                                }
+                                else
+                                {
+                                    celda1.Cells[j].Text="0";
+                                }
+                                
                             }
 
                         }
@@ -144,7 +165,7 @@ namespace Vistas
 
                         }
                         grid.FooterRow.Parent.Controls.Add(newRow);
-
+                        
                         foreach (TableCell celda in grid.HeaderRow.Cells)
 
                         {

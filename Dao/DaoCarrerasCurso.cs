@@ -351,95 +351,30 @@ namespace Dao
                 "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
                 "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
                 "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'MATRICULA' AND (paal_importepago='0' OR paal_estado='IMPAGO')) AS M_$IMPAGAS ";
+                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'MATRICULA' AND (paal_importepago='0' OR paal_estado='IMPAGO')) AS M_$IMPAGAS " +
+                ",(SELECT COUNT(alcc_tipodescuento) FROM alumnoscarreracurso INNER JOIN pagoalumnos ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+                 "WHERE alcc_tipodescuento = 'COMPLETA' AND cacu_descripcion = '" + descCarrera + "' AND(SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND(SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "') AS BECA_COMPLETA " +
+                ",(SELECT COUNT(alcc_tipodescuento) FROM alumnoscarreracurso INNER JOIN pagoalumnos ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+                "WHERE alcc_tipodescuento = 'MITAD' AND cacu_descripcion = '" + descCarrera + "' AND(SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND(SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "') AS BECA_MITAD " +
+                ",(SELECT SUM(paal_importepago) FROM pagoalumnos INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+                "WHERE cacu_descripcion = '" + descCarrera + "' AND(SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND(SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "') AS TOTAL_BECAS " +
+                ",(SELECT COUNT(alcc_descuentocuota) FROM alumnoscarreracurso " +
+                "INNER JOIN pagoalumnos ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
+                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+                "WHERE alcc_descuentocuota > 0 AND cacu_descripcion = '" + descCarrera + "' AND(SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND(SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "') AS CANT_DESCUENTO " +
+                ",(SELECT SUM(alcc_descuentocuota) FROM alumnoscarreracurso INNER JOIN pagoalumnos ON alcc_idalucarrcurs = paal_idalucarrcurs " +
+                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
+                "WHERE cacu_descripcion = '" + descCarrera + "' AND(SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND(SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "') AS TOTAL_DESCUENTO  ";
 
             dt = accesoDatos.ObtenerFila("pagoAlumnos", consulta);
             return dt;
         }
 
 
-        public DataRow traerDatosTotales(String descCarrera, String anio, String mes, String nombreMes)
-        {
-            DataRow dt;
-            string consulta = "SELECT ('" + nombreMes + "') AS MES " +
-                ",( " +
-                "SELECT COUNT(*) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'CUOTA') AS C_TOTAL " +
-                ",( " +
-                "SELECT COUNT(*) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'CUOTA' AND (paal_importecuota+paal_intereses=paal_importepago OR paal_estado='PAGO')) AS C_PAGAS " +
-                ",(SELECT COUNT(*) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'CUOTA' AND ((paal_importecuota+paal_intereses>paal_importepago AND paal_importepago>'0') OR paal_estado='PARCIAL')) AS C_PARCIALES " +
-                ",(SELECT COUNT(*) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'CUOTA' AND (paal_importepago='0' OR paal_estado='IMPAGO')) AS C_IMPAGAS " +
-                ",(SELECT CONCAT('$',CAST(COALESCE(SUM(paal_importepago),0) as varchar(50))) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'CUOTA' AND (paal_importecuota+paal_intereses=paal_importepago OR paal_estado='PAGO')) AS C_$PAGAS " +
-                ",(SELECT CONCAT('$',CAST(COALESCE(SUM(paal_importepago),0) as varchar(50))) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'CUOTA' AND ((paal_importecuota+paal_intereses>paal_importepago AND paal_importepago>'0') OR paal_estado='PARCIAL')) AS C_$PARCIALES " +
-                ",(SELECT CONCAT('$',CAST(COALESCE(SUM(paal_importecuota+paal_intereses-paal_importepago),0) as varchar(50))) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'CUOTA' AND (paal_importepago='0' OR paal_estado='IMPAGO')) AS C_$IMPAGAS " +
-                ",( " +
-                "SELECT COUNT(*) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'MATRICULA') AS M_TOTAL " +
-                ",( " +
-                "SELECT COUNT(*) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'MATRICULA' AND (paal_importecuota+paal_intereses=paal_importepago OR paal_estado='PAGO')) AS M_PAGAS " +
-                ",(SELECT COUNT(*) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'MATRICULA' AND ((paal_importecuota+paal_intereses>paal_importepago AND paal_importepago>'0') OR paal_estado='PARCIAL')) AS M_PARCIALES " +
-                ",(SELECT COUNT(*) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'MATRICULA' AND (paal_importepago='0' OR paal_estado='IMPAGO')) AS M_IMPAGAS " +
-                ",(SELECT CONCAT('$',CAST(COALESCE(SUM(paal_importepago),0) as varchar(50))) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'MATRICULA' AND (paal_importecuota+paal_intereses=paal_importepago OR paal_estado='PAGO')) AS M_$PAGAS " +
-                ",(SELECT CONCAT('$',CAST(COALESCE(SUM(paal_importepago),0) as varchar(50))) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'MATRICULA' AND ((paal_importecuota+paal_intereses>paal_importepago AND paal_importepago>'0') OR paal_estado='PARCIAL')) AS M_$PARCIALES " +
-                ",(SELECT CONCAT('$',CAST(COALESCE(SUM(paal_importecuota+paal_intereses-paal_importepago),0) as varchar(50))) FROM pagoalumnos " +
-                "INNER JOIN alumnoscarreracurso ON alcc_idalucarrcurs = paal_idalucarrcurs " +
-                "INNER JOIN carrerascursosalta ON alcc_idccalta = ccal_idccalta " +
-                "INNER JOIN carrerascursos ON ccal_idcarrcurs = cacu_idcarrcurs " +
-                "WHERE cacu_descripcion = '" + descCarrera + "' AND (SELECT EXTRACT(YEAR FROM paal_fechadeb)) = '" + anio + "' AND (SELECT EXTRACT(MONTH FROM paal_fechadeb)) = '" + mes + "' AND paal_tipopago = 'MATRICULA' AND (paal_importepago='0' OR paal_estado='IMPAGO')) AS M_$IMPAGAS ";
-
-            dt = accesoDatos.ObtenerFila("pagoAlumnos", consulta);
-            return dt;
-        }
     }
 
 

@@ -89,6 +89,12 @@ namespace Negocio
             tablaResuelta.Columns.Add("M_$PAGAS");
             tablaResuelta.Columns.Add("M_$PARCIALES");
             tablaResuelta.Columns.Add("M_$IMPAGAS");
+            //
+            tablaResuelta.Columns.Add("BECA_COMPLETA");
+            tablaResuelta.Columns.Add("BECA_MITAD");
+            tablaResuelta.Columns.Add("TOTAL_BECAS");
+            tablaResuelta.Columns.Add("CANT_DESCUENTO");
+            tablaResuelta.Columns.Add("TOTAL_DESCUENTO");
 
 
             for (int i=0;i<meses.Items.Count;i++){
