@@ -326,6 +326,13 @@ namespace Vistas
             btnRefresh.Visible = false;
             btnExportar.Visible = false;
             btnBuscar.Visible = true;
+            cblMes.ClearSelection();
+            cblCarrera.ClearSelection();
+            String idusuario = Session["IdUsuario"].ToString();
+            negocioCarrerasCurso.cargarDatosCarrerasCBL(idusuario, cblCarrera);
+            rblistSeleccionCarrCurso.SelectedIndex = 0;
+            rblAnio.SelectedIndex = 0;
+            tbxBusquedaTexto.Text = "";
 
         }
     }
