@@ -73,7 +73,7 @@
                     <div class="col">
                         <div class="encabezado">
 
-                             <h3 style="font-size: 1.9vw">CONTROL DE PAGOS</h3>
+                             <h3 style="font-size: 1.5vw">CONTROL DE PAGOS</h3>
                         </div>
                     </div>
                 </div>

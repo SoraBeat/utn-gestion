@@ -17,6 +17,8 @@
 </head>
 
 <body>
+
+<div class="container-xxl">
     <div class="container-fluid">
                 <div class="row first">
                     <div class="col">
@@ -27,10 +29,11 @@
                     <div class="col">
                         <div class="encabezado">
 
-                            <h3 style="font-size: 1.9vw">CONTROL DE PAGOS</h3>
+                            <h3 style="font-size: 1.5vw">CONTROL DE PAGOS</h3>
                         </div>
                     </div>
                 </div>
+        </div>
     <form id="form1" runat="server">
         <header>
             <h1>
@@ -52,13 +55,13 @@
         <br />
 
         <div>
-            <a href="ControlPagos2.aspx">Control Pagos</a>
+            <a  href="ControlPagos2.aspx"><input class="btn btn-primary col-2" type="button" value="Ir a Control Pagos" /></a>
         </div>
     </form>
+    </div>
 
      <div class="container">
-        <footer style="position:absolute;bottom:0;"  class="py-3 my-4">
-               
+        <footer class="py-3 my-4">
                 <p class="text-center text-muted">© 2022 UNIVERSIDAD TECNCOLOGICA NACIONAL, FRGP</p>
         </footer>
     </div>
