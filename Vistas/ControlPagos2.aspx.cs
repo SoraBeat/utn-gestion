@@ -40,6 +40,7 @@ namespace Vistas
                 negocioCarrerasCurso.cargarDatosCarrerasCBL(idusuario, cblCarrera);
                 negocioCarrerasCurso.cargarDatosMesesCBL(cblMes);
                 negocioCarrerasCurso.cargarDatosAñosRBL(rblAnio);
+                cblMes.SelectedIndex = 0;
             }
         }
 
@@ -326,7 +327,7 @@ namespace Vistas
             btnRefresh.Visible = false;
             btnExportar.Visible = false;
             btnBuscar.Visible = true;
-            cblMes.ClearSelection();
+            cblMes.SelectedIndex=0;
             cblCarrera.ClearSelection();
             String idusuario = Session["IdUsuario"].ToString();
             negocioCarrerasCurso.cargarDatosCarrerasCBL(idusuario, cblCarrera);
